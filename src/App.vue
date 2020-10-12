@@ -1,15 +1,33 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <widget 
+    :min="0"
+    :max="50"
+    :value="value"
+    @input="handleChange"
+  />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Widget from './components/widget.vue'
+import { useStore } from 'vuex'
+import { toRefs } from 'vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Widget,
+  },
+  setup() {
+    const {state, dispatch} = useStore();
+    const {count} = toRefs(state);
+
+    const handleChange = (value) => dispatch('change', value);
+
+    return {
+      value: count,
+      handleChange,
+    }
   }
 }
 </script>
